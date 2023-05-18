@@ -6,10 +6,7 @@
   width: 640,
   height: 640
 });
-   const targetDiv = document.querySelector(".3dcard");
-
-    // Append the app.view to the target div
-    targetDiv.appendChild(app.view);
+document.body.appendChild(app.view);
 
 let img = new PIXI.Sprite.from("https://i.imgur.com/6trVFvS.jpg");
 img.width = 640;
@@ -41,8 +38,6 @@ canvas {
   border-radius: 20px;
 }
 </style>
-
-<div class="flex"></div>
 <div class="3dcard"></div>
  <h1>Upload a portrait photo</h1>
   <form id="uploadForm">
@@ -66,7 +61,7 @@ canvas {
       }
   
       const formData = new FormData();
-      formData.append("image", file);
+      formData.append("face_url", file);
   
       const response = await fetch(
         "https://api.magicflow.ai/workflow/f1393464-0252-41f1-ada4-0f42f97c662d/job",
@@ -116,5 +111,5 @@ canvas {
       }
     });
   </script>
-  
+
 </body>
