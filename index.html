@@ -1,11 +1,9 @@
 <body class="app">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.3.2/pixi.min.js"></script>
-    <div class="container">
-      <div class="3dcard">
-        <script>
-          let app = new PIXI.Application({
-  width: 768,
-  height: 512
+    <script>
+        let app = new PIXI.Application({
+width: 512,
+height: 512
 });
 document.body.appendChild(app.view);
 
@@ -23,11 +21,14 @@ app.stage.width = 640;
 app.stage.height = 640;
 
 window.onmousemove = function (e) {
-  displacementFilter.scale.x = (640 / 2 - e.clientX) / 30;
-  displacementFilter.scale.y = (640 / 2 - e.clientY) / 30;
+displacementFilter.scale.x = (640 / 2 - e.clientX) / 30;
+displacementFilter.scale.y = (640 / 2 - e.clientY) / 30;
 };
 
-        </script>
+      </script>
+    <div class="container">
+      <div class="3dcard">
+   
       </div>
       <div class="uploadForm">
         <h1>Upload a portrait photo</h1>
@@ -148,16 +149,16 @@ window.onmousemove = function (e) {
       }
   
       .container {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
-        width: 100%;
-      }
-  
-     .3dcard {
-        flex: 1;
-      }
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+}
+
+.3dcard {
+  width: 60%; /* Adjust the width as desired */
+}
+
   
       .uploadForm {
         flex: 1;
