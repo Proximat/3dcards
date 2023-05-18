@@ -71,7 +71,68 @@
           return;
         }
   
-        // rest of your code
+  
+        const formData = new FormData();
+      formData.append("face_url", file);
+      formData.append("style", style);
+
+  
+      const response = await fetch(
+  "https://api.magicflow.ai/workflow/f1393464-0252-41f1-ada4-0f42f97c662d/job",
+  {
+    method: "POST",
+    headers: {
+      "Authorization": "Token mRrGdHKrm3kDL8t3hl3gKeVsuEsZKbLRU/KlhwjJij94biwkNvfQCmma/xgyRAp2"
+    },
+    body: formData
+  }
+);
+
+  
+      if (response.ok) {
+        const { jobId } = await response.json();
+        countdownElement.innerText = "20";
+        
+        let counter = 20;
+        const countdownInterval = setInterval(() => {
+          counter--;
+          countdownElement.innerText = counter;
+          if (counter <= 0) clearInterval(countdownInterval);
+        }, 1000);
+  
+        setTimeout(async () => {
+          clearInterval(countdownInterval);
+          countdownElement.innerText = "Fetching results...";
+          
+          const resultResponse = await fetch(
+            `https://api.magicflow.ai/workflow/f1393464-0252-41f1-ada4-0f42f97c662d/jobs/${jobId}/results`,
+            {
+              headers: {
+                "Authorization": "Token mRrGdHKrm3kDL8t3hl3gKeVsuEsZKbLRU/KlhwjJij94biwkNvfQCmma/xgyRAp2",
+              },
+              timeout: 120000 // Set the timeout to 120 seconds (120,000 milliseconds)
+            }
+          );
+  
+          if (resultResponse.ok) {
+          const results = await resultResponse.json();
+          console.log(results); // Process the results as needed
+          
+          // Assuming results contain the URLs for the new images
+          const newImageURL = results['upload-file'];
+          const newDepthMapURL = results['upload-depth'];
+          
+          // Update PIXI.js sprites with new images
+          img.texture = PIXI.Texture.from(newImageURL);
+          depthMap.texture = PIXI.Texture.from(newDepthMapURL);
+        } else {
+          console.log("Failed to fetch results.");
+        }
+      }, 20000);
+    } else {
+      console.log("Failed to upload image.");
+      }
+
       });
     </script>
     <style>
