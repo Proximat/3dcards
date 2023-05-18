@@ -2,11 +2,13 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.3.2/pixi.min.js"></script>
 
 <script>
+
+document.body.appendChild(app.view);
+
     let app = new PIXI.Application({
   width: 640,
   height: 640
 });
-document.body.appendChild(app.view);
 
 let img = new PIXI.Sprite.from("https://i.imgur.com/6trVFvS.jpg");
 img.width = 640;
