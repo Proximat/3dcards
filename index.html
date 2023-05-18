@@ -94,46 +94,47 @@ displacementFilter.scale.y = (640 / 2 - e.clientY) / 30;
 );
 
   
-      if (response.ok) {
-        const { jobId } = await response.json();
-        countdownElement.innerText = "20";
-        
-        let counter = 20;
-        const countdownInterval = setInterval(() => {
-          counter--;
-          countdownElement.innerText = counter;
-          if (counter <= 0) clearInterval(countdownInterval);
-        }, 1000);
-  
-        setTimeout(async () => {
-          clearInterval(countdownInterval);
-          countdownElement.innerText = "Fetching results...";
-          
-          const resultResponse = await fetch(
-            `https://api.magicflow.ai/workflow/f1393464-0252-41f1-ada4-0f42f97c662d/jobs/${jobId}/results`,
-            {
-              headers: {
-                "Authorization": "Token mRrGdHKrm3kDL8t3hl3gKeVsuEsZKbLRU/KlhwjJij94biwkNvfQCmma/xgyRAp2",
-              },
-              timeout: 120000 // Set the timeout to 120 seconds (120,000 milliseconds)
-            }
-          );
-  
-          if (resultResponse.ok) {
-          const results = await resultResponse.json();
-          console.log(results); // Process the results as needed
-          
-          // Assuming results contain the URLs for the new images
-          const newImageURL = results['upload-file'];
-          const newDepthMapURL = results['upload-depth'];
-          
-          // Update PIXI.js sprites with new images
-          img.texture = PIXI.Texture.from(newImageURL);
-          depthMap.texture = PIXI.Texture.from(newDepthMapURL);
-        } else {
-          console.log("Failed to fetch results.");
-        }
-      }, 20000);
+setTimeout(async () => {
+  clearInterval(countdownInterval);
+  countdownElement.innerText = "Fetching results...";
+
+  const controller = new AbortController();
+  const timeoutDuration = 120000; // Timeout duration in milliseconds
+
+  const timeoutId = setTimeout(() => {
+    controller.abort();
+    console.log("Request timed out.");
+  }, timeoutDuration);
+
+  try {
+    const resultResponse = await fetch(
+      `https://api.magicflow.ai/workflow/f1393464-0252-41f1-ada4-0f42f97c662d/jobs/${jobId}/results`,
+      {
+        headers: {
+          "Authorization": "Token mRrGdHKrm3kDL8t3hl3gKeVsuEsZKbLRU/KlhwjJij94biwkNvfQCmma/xgyRAp2",
+        },
+        signal: controller.signal, // Pass the abort signal to the fetch request
+      }
+    );
+
+    clearTimeout(timeoutId); // Clear the timeout if the response is received before the timeout duration
+
+    if (resultResponse.ok) {
+      // Process the response
+      const results = await resultResponse.json();
+      console.log(results);
+
+      // Update PIXI.js sprites with new images
+      img.texture = PIXI.Texture.from(results["upload-file"]);
+      depthMap.texture = PIXI.Texture.from(results["upload-depth"]);
+    } else {
+      console.log("Failed to fetch results. Status:", resultResponse.status);
+    }
+  } catch (error) {
+    console.log("Error:", error.message);
+  }
+}, 20000);
+
     } else {
       console.log("Failed to upload image.");
       }
