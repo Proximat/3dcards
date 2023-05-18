@@ -38,7 +38,7 @@ canvas {
   border-radius: 20px;
 }
 </style>
-  <h1>Image Upload</h1>
+ <h1>Image Upload</h1>
   <form id="uploadForm">
     <input type="file" id="imageInput" accept="image/*" required>
     <button type="submit">Upload</button>
@@ -84,6 +84,7 @@ canvas {
               headers: {
                 "Authorization": "Token mRrGdHKrm3kDL8t3hl3gKeVsuEsZKbLRU/KlhwjJij94biwkNvfQCmma/xgyRAp2",
               },
+              timeout: 120000 // Set the timeout to 120 seconds (120,000 milliseconds)
             }
           );
 
@@ -99,6 +100,5 @@ canvas {
       }
     });
   </script>
-
 
 </body>
