@@ -2,14 +2,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.3.2/pixi.min.js"></script>
     <script>
         let app = new PIXI.Application({
-width: 768,
+width: 512,
 height: 512
 });
 document.body.appendChild(app.view);
 
 let img = new PIXI.Sprite.from("https://3dcards-lake.vercel.app/img.jpg");
-img.width = 768;
-img.height = 512;
+img.width = 640;
+img.height = 640;
 app.stage.addChild(img);
 
 const depthMap = new PIXI.Sprite.from("https://3dcards-lake.vercel.app/depth.jpg");
@@ -17,12 +17,12 @@ app.stage.addChild(depthMap);
 
 const displacementFilter = new PIXI.filters.DisplacementFilter(depthMap);
 app.stage.filters = [displacementFilter];
-app.stage.width = 768;
-app.stage.height = 768;
+app.stage.width = 640;
+app.stage.height = 640;
 
 window.onmousemove = function (e) {
-displacementFilter.scale.x = (768 / 2 - e.clientX) / 36;
-displacementFilter.scale.y = (768 / 2 - e.clientY) / 36;
+displacementFilter.scale.x = (640 / 2 - e.clientX) / 30;
+displacementFilter.scale.y = (640 / 2 - e.clientY) / 30;
 };
 
       </script>
