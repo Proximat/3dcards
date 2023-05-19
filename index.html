@@ -7,12 +7,12 @@ height: 512
 });
 document.body.appendChild(app.view);
 
-let img = new PIXI.Sprite.from("https://3dcards-lake.vercel.app/img.jpg");
+let img = new PIXI.Sprite.from("https://3dcards-lake.vercel.app/a1.jpg");
 img.width = 640;
 img.height = 640;
 app.stage.addChild(img);
 
-const depthMap = new PIXI.Sprite.from("https://3dcards-lake.vercel.app/depth.jpg");
+const depthMap = new PIXI.Sprite.from("https://3dcards-lake.vercel.app/a2.jpg");
 app.stage.addChild(depthMap);
 
 const displacementFilter = new PIXI.filters.DisplacementFilter(depthMap);
